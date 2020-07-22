@@ -1,4 +1,6 @@
 const constants = require('../constants');
+const ioClient = require('socket.io-client');
+const { handleResponse } = require('./socketManager');
 
 class LoadBalancer {
     constructor(servers = ['0:0:0:0']) {
@@ -15,7 +17,10 @@ class LoadBalancer {
         }
 
         this.servers = [...servers];
+        this.serverSockets = {};
+
         this.hashServers();
+        this.buildSockets();
     }
     static hash(key, seed = '0') {
         const str = key + ':' + seed;
@@ -32,6 +37,15 @@ class LoadBalancer {
     updateServers(servers) {
         this.servers = [...servers];
         this.hashServers();
+        this.buildSockets();
+    }
+    buildSockets() {
+        let temp = {};
+        this.servers.forEach((server) => {
+            temp[server] = ioClient(server);
+            temp[server].on('response', handleResponse);
+        });
+        this.serverSockets = { ...temp };
     }
     hashServers() {
         let last = -1;
@@ -62,6 +76,9 @@ class LoadBalancer {
     getConsistentServer(key) {
         const idx = ((LoadBalancer.hash(key) % this.mod) + this.mod) % this.mod;
         return this.servers[this.mask[idx]];
+    }
+    getSocket(server) {
+        return this.serverSockets[server];
     }
 }
 

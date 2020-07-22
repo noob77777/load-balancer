@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/noob77777/load-balancer#readme",
   "dependencies": {
+    "async-redis": "^1.1.7",
     "express": "^4.17.1",
     "socket.io": "^2.3.0"
   }
