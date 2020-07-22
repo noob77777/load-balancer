@@ -6,12 +6,17 @@ const LoadBalancer = require('./modules/LoadBalancer/LoadBalancer');
 const port = constants.PORT;
 
 app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
 
 const loadBalancer = new LoadBalancer();
 
-app.post('/updateservers', (req, res) => {
-    console.log(req);
-} )
+app.post('/updateservers/', (req, res) => {
+    loadBalancer.updateServers(
+        req.body.servers ? req.body.servers : ['http://0:0:0:0']
+    );
+    res.statusCode = 200;
+    res.end();
+});
 
 io.on('connection', (client) => {
     client.on('request', (data) => {

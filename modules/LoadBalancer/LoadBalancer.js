@@ -35,6 +35,9 @@ class LoadBalancer {
         return hash;
     }
     updateServers(servers) {
+        console.log(`Updating servers list for load balancer.
+servers: ${servers}`);
+
         this.servers = [...servers];
         this.hashServers();
         this.buildSockets();
