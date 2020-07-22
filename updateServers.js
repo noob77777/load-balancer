@@ -4,7 +4,7 @@ const constants = require('./modules/constants');
 
 const data = fs.readFileSync('./servers.txt', { encoding: 'utf8', flag: 'r' });
 
-const request = { servers: data.split('\n') };
+const request = { servers: data.split('\n').filter((str) => str !== '') };
 
 try {
     axios.post(
