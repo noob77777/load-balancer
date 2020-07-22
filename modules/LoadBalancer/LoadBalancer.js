@@ -1,6 +1,7 @@
 const constants = require('../constants');
 const ioClient = require('socket.io-client');
 const { handleResponse } = require('./socketManager');
+const Logger = require('../Logger');
 
 class LoadBalancer {
     constructor(servers = ['0:0:0:0']) {
@@ -35,7 +36,7 @@ class LoadBalancer {
         return hash;
     }
     updateServers(servers) {
-        console.log(`Updating servers list for load balancer.
+        Logger.LOG(`Updating servers list for load balancer.
 servers: ${servers}`);
 
         this.servers = [...servers];

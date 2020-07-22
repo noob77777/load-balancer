@@ -2,6 +2,7 @@ const express = require('express');
 const constants = require('./modules/constants');
 const { app, server, io } = require('./modules/Common');
 const { handleRequest } = require('./modules/LoadBalancer/socketManager');
+const Logger = require('./modules/Logger');
 const LoadBalancer = require('./modules/LoadBalancer/LoadBalancer');
 const port = constants.PORT;
 
@@ -22,7 +23,7 @@ io.on('connection', (client) => {
     client.on('request', (data) => {
         const key = data.key;
         if (!key) {
-            console.log(`Invalid key from ${client.id} in request`);
+            Logger.LOG(`Invalid key from ${client.id} in request`);
             return;
         }
         const url = loadBalancer.getConsistentServer(data.key);

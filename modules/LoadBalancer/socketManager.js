@@ -1,6 +1,7 @@
 const asyncRedis = require('async-redis');
 const { io } = require('../Common');
 const constants = require('../constants');
+const Logger = require('../Logger');
 
 const redisGetClient = () => {
     const client = asyncRedis.createClient({
@@ -9,7 +10,7 @@ const redisGetClient = () => {
     });
 
     client.on('error', (err) => {
-        console.log(`error: ${err}`);
+        Logger.LOG(`error: ${err}`);
     });
 
     return client;
@@ -17,7 +18,7 @@ const redisGetClient = () => {
 
 const handleRequest = async (data, socket) => {
     if (!socket) {
-        console.log(
+        Logger.LOG(
             `socketManager.handleRequest param socket is null
             for key: ${data.key}`
         );
@@ -33,7 +34,7 @@ const handleRequest = async (data, socket) => {
 const handleResponse = async (data) => {
     const key = data.key;
     if (!key) {
-        console.log('Fatal error: Invalid key in response.');
+        Logger.LOG('Fatal error: Invalid key in response.');
         return;
     }
     const redisClient = redisGetClient();
