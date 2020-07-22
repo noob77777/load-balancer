@@ -1,4 +1,5 @@
 const express = require('express');
+const request = require('request');
 const constants = require('./modules/constants');
 const { app, server, io } = require('./modules/Common');
 const { handleRequest } = require('./modules/LoadBalancer/socketManager');
@@ -18,6 +19,21 @@ app.post('/updateservers/', (req, res) => {
     res.statusCode = 200;
     res.end();
 });
+
+const handler = (req, res) => {
+    const _req = request({ url: loadBalancer.getRandomServer() + req.url }).on(
+        'error',
+        (error) => {
+            res.status(500).send(
+                error.message ? error.message : '500: Internal Server Error'
+            );
+        }
+    );
+    req.pipe(_req).pipe(res);
+};
+
+app.get('*', handler);
+app.post('*', handler);
 
 io.on('connection', (client) => {
     client.on('request', (data) => {
