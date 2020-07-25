@@ -35,14 +35,14 @@ const request = {
     language: language,
 };
 
-for (let i = 0; i < 5; i++) {
+for (let i = 0; i < 50; i++) {
     socket.emit('request', { ...request, key: i + 1, requestType: 'run' });
 }
 
-for (let i = 0; i < 5; i++) {
+for (let i = 0; i < 50; i++) {
     socket.emit('request', {
         ...request,
-        key: i + 10,
+        key: i + 101,
         requestType: 'run',
         language: '1',
     });
@@ -56,14 +56,14 @@ socket.emit('request', {
     language: '1',
 });
 
-for (let i = 0; i < 5; i++) {
+for (let i = 0; i < 50; i++) {
     socket.emit('request', {
         ...request,
         requestType: 'check',
     });
 }
 
-for (let i = 0; i < 5; i++) {
+for (let i = 0; i < 50; i++) {
     socket.emit('request', {
         ...request,
         key: 'testcpp',

@@ -42,6 +42,8 @@ servers: ${servers}`);
         this.servers = [...servers];
         this.hashServers();
         this.buildSockets();
+
+        Logger.LOG(`Distribution:\n ${this.mask}`);
     }
     buildSockets() {
         let temp = {};
@@ -52,6 +54,10 @@ servers: ${servers}`);
         this.serverSockets = { ...temp };
     }
     hashServers() {
+        for (let i = 0; i < this.mod; i++) {
+            this.mask[i] = -1;
+        }
+
         let last = -1;
         for (let i = 0; i < this.servers.length; i++) {
             for (let j = 0; j < this.seeds.length; j++) {
