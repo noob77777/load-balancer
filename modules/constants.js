@@ -1,5 +1,5 @@
 const constants = {
-    PORT: 8080,
+    PORT: 80,
     HASH_COUNT: 17,
     MOD: 1007,
     REDIS_PORT: 6379,

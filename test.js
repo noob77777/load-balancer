@@ -1,6 +1,6 @@
 const assert = require('assert');
 const io = require('socket.io-client');
-const socket = io('http://localhost:8080');
+const socket = io('http://localhost');
 
 socket.on('response', (data) => {
     console.log(data);
